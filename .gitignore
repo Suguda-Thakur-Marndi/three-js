@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.vite/
+*.log
+.tmp_sizes.txt
+.DS_Store
+Thumbs.db
