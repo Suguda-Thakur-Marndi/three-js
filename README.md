@@ -1,18 +1,18 @@
 # THREE-JS
 
-A small Vite + React project that renders a 3D dog model with React Three Fiber.
+Small React + Vite scene that renders a 3D dog model using React Three Fiber.
 
-## Features
+## What This Project Does
 
-- Loads a GLB dog model from the public assets folder
-- Applies a normal map with a custom red `MeshStandardMaterial`
-- Uses orbit controls for interactive camera movement
-- Renders the scene full screen
+- Loads a Draco-compressed GLB model from the public folder
+- Applies a MatCap material to every mesh in the model
+- Uses orbit controls so you can inspect the model interactively
+- Runs in a full-viewport canvas
 
 ## Tech Stack
 
-- Vite
-- React
+- React 19
+- Vite 8
 - Three.js
 - @react-three/fiber
 - @react-three/drei
@@ -26,6 +26,8 @@ A small Vite + React project that renders a 3D dog model with React Three Fiber.
 |- main.jsx
 |- components/
 |  |- Dog.jsx
+|- matcap/
+|  |- mat-1.png ... mat-20.png
 |- public/
 |  |- dog_normals.jpg
 |  |- models/
@@ -34,37 +36,47 @@ A small Vite + React project that renders a 3D dog model with React Three Fiber.
 
 ## Getting Started
 
-### Install dependencies
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-### Start the development server
+### 2. Start development server
 
 ```bash
 npm run dev
 ```
 
-### Build for production
+### 3. Build for production
 
 ```bash
 npm run build
 ```
 
-### Preview the production build
+### 4. Preview production build
 
 ```bash
 npm run preview
 ```
 
+## How Rendering Is Set Up
+
+- Entry point mounts React from `main.jsx` into `#root`
+- `App.jsx` renders the `Dog` scene component
+- `components/Dog.jsx`:
+	- loads `/models/dog.drc.glb` with `useGLTF`
+	- loads `matcap/mat-2.png` with `useTexture`
+	- assigns a shared `THREE.MeshMatcapMaterial` to all meshes
+	- sets renderer tone mapping to `THREE.ReinhardToneMapping`
+	- enables `OrbitControls`
+
 ## Notes
 
-- The dog model is loaded from `/models/dog.drc.glb`.
-- The normal texture is loaded from `/dog_normals.jpg`.
-- The main scene logic lives in `components/Dog.jsx`.
+- The model is preloaded with `useGLTF.preload("/models/dog.drc.glb")`.
+- `public/dog_normals.jpg` exists but is not currently used by the active material pipeline.
 
 ## Requirements
 
-- Node.js 18 or newer is recommended
-- npm for dependency management
+- Node.js 18+
+- npm
